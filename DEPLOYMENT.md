@@ -10,17 +10,17 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Họ và tên | (điền họ tên) |
-| Mã học viên | (điền mã học viên) |
-| Repo | (điền link repo K4-DAY12-...) |
+| Họ và tên | Vũ Hoàng Việt |
+| Mã học viên | 2A202601250 |
+| Repo | https://github.com/vietdayma/K4-DAY12-2A202601250-VuHoangViet |
 
 ## Service
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | https://TODO-thay-bang-url-that.up.railway.app |
-| Platform | Railway / Render / Cloud Run — (điền platform bạn dùng) |
-| Ngày deploy | (điền ngày) |
+| Public URL | https://k4-day12-2a202601250-vuhoangviet-production.up.railway.app |
+| Platform | Railway |
+| Ngày deploy | 2026-08-10 |
 
 ## Biến Môi Trường Đã Set Trên Cloud
 
@@ -28,9 +28,9 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 
 | Biến | Đã set | Ghi chú |
 |------|--------|---------|
-| `PORT` | ✅ | platform tự gán |
-| `API_TOKEN` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | (điền: Redis add-on của platform / Upstash / ...) |
+| `PORT` | ✅ | Railway tự gán |
+| `API_TOKEN` | ✅ | đặt trong dashboard Railway, không nằm trong repo |
+| `REDIS_URL` | ✅ | Redis add-on của Railway, nối qua Variable Reference |
 | `BUCKET_CAPACITY` | ✅ | 10 |
 | `REFILL_PER_MINUTE` | ✅ | 10 |
 | `DAILY_BUDGET_USD` | ✅ | 1.0 |
@@ -74,29 +74,31 @@ done; echo
 Dán output của các lệnh trên vào đây:
 
 ```
-(điền output)
+=== 1. GET /healthz ===
+HTTP/1.1 200 OK
+{"status":"ok","service":"day12-chat-service","version":"1.0.0"}
+
+=== 2. GET /readyz ===
+HTTP/1.1 200 OK
+{"status":"ready","redis":true}
+
+=== 3. POST /chat không token ===
+HTTP/1.1 401 Unauthorized
+www-authenticate: Bearer
+{"detail":"invalid or missing bearer token"}
+
+=== 4. POST /chat có token ===
+HTTP/1.1 200 OK
+{"reply":"...","client_id":"sv-test","turns_before":0,"usd_cost":2.265e-05,
+ "usage":{"prompt":3,"completion":37}}
 ```
 
 ## Ảnh Chụp Màn Hình
 
 Đặt ảnh trong thư mục `screenshots/`:
 
-- `screenshots/dashboard.png` — trang quản lý service trên platform
-- `screenshots/healthz.png` — kết quả gọi `/healthz` từ trình duyệt hoặc curl
-
----
-
-## Nếu Dùng Phương Án Dự Phòng
-
-Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng CP5 tối đa 60% điểm:
-
-1. Đặt `LOCAL_FALLBACK=true` trong `.env`
-2. Chạy `docker compose up -d` rồi kiểm tra `docker compose ps`
-3. Chụp màn hình vào `screenshots/`
-4. Chạy `pytest tests/test_cp5.py -v` — bộ test sẽ tự chuyển sang kiểm tra
-   `http://localhost:8000`
-5. Ghi rõ lý do không deploy được vào phần dưới đây:
-
-```
-(điền lý do nếu dùng phương án dự phòng, ngược lại xóa mục này)
-```
+- `screenshots/Screenshot 2026-08-10 162430.png` — dashboard Railway, deployment Active
+- `screenshots/Screenshot 2026-08-10 162652.png` — `GET /healthz` → 200
+- `screenshots/Screenshot 2026-08-10 162719.png` — `GET /readyz` → 200
+- `screenshots/Screenshot 2026-08-10 162832.png` — `POST /chat` không token → 401
+- `screenshots/Screenshot 2026-08-10 163347.png` — `POST /chat` có token → 200
